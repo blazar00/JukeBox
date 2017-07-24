@@ -116,20 +116,23 @@ public class Iteration1Controller extends Application {
 				loginStatus.setText("Please come again");
 			}
 			else if (songSelectOne == buttonClicked && loggedin) {
-				if(account.getSongsPlayed() < 3)
-					playlist.play("LopingSting");
+				if(account.getSongsPlayed() < 3){
+					playlist.addToQueue("LopingSting");
+				}
 				account.playedSong();
 				
 			} else if (songSelectOne == buttonClicked && !loggedin){
 				loginStatus.setText("Please login in to play a song");
 			}
 			if (songSelectTwo == buttonClicked && loggedin) {
-				if(account.getSongsPlayed() < 3)
-					playlist.play("Pokemon Capture");
+				if(account.getSongsPlayed() < 3){
+					playlist.addToQueue("Pokemon Capture");
+				}
 				account.playedSong();
 			} else if (songSelectTwo == buttonClicked && !loggedin){
 				loginStatus.setText("Please login in to play a song");
 			}
+			playlist.play();
 		}
 	}
 }

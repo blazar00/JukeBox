@@ -5,12 +5,14 @@ public class Song {
 	private String path;
 	private String artist;
 	private int time;
+	private int timesSelected; // for later
 	
 	public Song(String n, String p, String a, int t){
 		name = n;
 		path = p;
 		artist = a;
 		time = t;
+		timesSelected = 0;
 	}
 	
 	public String getName(){
