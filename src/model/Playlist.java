@@ -21,8 +21,6 @@ public class Playlist {
 	}
 
 	public void play(String song) {
-		if(songplaycount > 5)
-			return;   
 		Song s = find(song);
 		if(s == null)
 			return;

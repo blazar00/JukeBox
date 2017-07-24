@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import model.Playlist;
 import model.Registry;
 import model.Song;
+import model.User;
 
 public class Iteration1Controller extends Application {
 
@@ -90,7 +91,8 @@ public class Iteration1Controller extends Application {
 
 	private class ButtonListener implements EventHandler<ActionEvent> {
 		boolean loggedin = false;
-
+		User account;
+		
 		@Override
 		public void handle(ActionEvent arg0) {
 			// TODO Auto-generated method stub
@@ -98,27 +100,33 @@ public class Iteration1Controller extends Application {
 			if (loginButton == buttonClicked) {
 				String acc = accountName.getText();
 				String pass = password.getText();
+				account = reg.search(acc, pass);
 				// authenticate
-				if (reg.search(acc, pass)) {
+				if ( account != null) {
 					loggedin = true;
-					loginStatus.setText("Hi," + acc);
+					loginStatus.setText("Hi," + account.getAccountName());
 				} else {
 					loginStatus.setText("Log in failed");
 					loggedin = false;
 				}
 
 			}
-			if (logoutButton == buttonClicked && loggedin) {
+			else if (logoutButton == buttonClicked && loggedin) {
 				loggedin = false;
 				loginStatus.setText("Please come again");
 			}
 			else if (songSelectOne == buttonClicked && loggedin) {
-				playlist.play("LopingSting");
+				if(account.getSongsPlayed() < 3)
+					playlist.play("LopingSting");
+				account.playedSong();
+				
 			} else if (songSelectOne == buttonClicked && !loggedin){
 				loginStatus.setText("Please login in to play a song");
 			}
 			if (songSelectTwo == buttonClicked && loggedin) {
-				playlist.play("Pokemon Capture");
+				if(account.getSongsPlayed() < 3)
+					playlist.play("Pokemon Capture");
+				account.playedSong();
 			} else if (songSelectTwo == buttonClicked && !loggedin){
 				loginStatus.setText("Please login in to play a song");
 			}

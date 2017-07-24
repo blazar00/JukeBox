@@ -10,12 +10,12 @@ public class Registry {
 		users.add(new User(account, pass));
 	}
 	
-	public boolean search(String account, String pass){
+	public User search(String account, String pass){
 		for(int i = 0; i < users.size(); i++)
 			if(users.get(i).getAccountName().equals(account))
 				if(users.get(i).getPassword().equals(pass))
-					return true;
-		return false;
+					return users.get(i);
+		return null;
 	}
 
 }
