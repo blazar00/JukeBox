@@ -15,6 +15,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import model.Playlist;
 import model.Registry;
+import model.Song;
 
 public class Iteration1Controller extends Application {
 
@@ -27,6 +28,7 @@ public class Iteration1Controller extends Application {
 	private Label loginStatus;
 	private GridPane grid;
 	private Playlist playlist;
+	private Registry reg;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -35,6 +37,17 @@ public class Iteration1Controller extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		playlist = new Playlist();
+		playlist.addSong(new Song("LopingSting", "songfiles/LopingSting.mp3", "Kevin MacLeod", 5));
+		playlist.addSong(new Song("Pokemon Capture", "songfiles/Capture.mp3", "Pikachu", 5));
+		playlist.addSong(new Song("Danse Macabre", "songfiles/DanseMacabreViolinHook.mp3", "Kevin MacLeod", 34));
+		playlist.addSong(new Song("Determined Tumbao", "songfiles/DeterminedTumbao.mp3", "FreePlay Music", 20));
+		playlist.addSong(new Song("Swing Cheese", "songfiles/SwingCheese.mp3", "FreePlay Music", 15));
+		playlist.addSong(new Song("The Curtain Rises", "songfiles/UntameableFire.mp3", "Pierre Langer", 282));
+		reg = new Registry();
+		reg.addUser("Chris", "1");
+		reg.addUser("Devon", "22");
+		reg.addUser("River", "333");
+		reg.addUser("Ryan", "4444");
 		BorderPane all = new BorderPane();
 		Scene scene = new Scene(all, 400, 300);
 		grid = new GridPane();
@@ -82,11 +95,6 @@ public class Iteration1Controller extends Application {
 		public void handle(ActionEvent arg0) {
 			// TODO Auto-generated method stub
 			Button buttonClicked = (Button) arg0.getSource();
-			Registry reg = new Registry();
-			reg.addUser("Chris", "1");
-			reg.addUser("Devon", "22");
-			reg.addUser("River", "333");
-			reg.addUser("Ryan", "4444");
 			if (loginButton == buttonClicked) {
 				String acc = accountName.getText();
 				String pass = password.getText();
@@ -105,12 +113,12 @@ public class Iteration1Controller extends Application {
 				loginStatus.setText("Please come again");
 			}
 			else if (songSelectOne == buttonClicked && loggedin) {
-				// send to song object to playlist?
-				playlist.play();
+				playlist.play("LopingSting");
 			} else if (songSelectOne == buttonClicked && !loggedin){
 				loginStatus.setText("Please login in to play a song");
 			}
 			if (songSelectTwo == buttonClicked && loggedin) {
+				playlist.play("Pokemon Capture");
 			} else if (songSelectTwo == buttonClicked && !loggedin){
 				loginStatus.setText("Please login in to play a song");
 			}

@@ -9,23 +9,25 @@ import model.Song;
 
 
 public class Playlist {
-	private ArrayList<Song> playlist;
-	private int songplaycount=0;
+	private ArrayList<Song> playlist = new ArrayList<Song>();
+	private int songplaycount = 0;
 	
-	private void addSong(Song song) {
+	public void addSong(Song song) {
 		playlist.add(song);
 	}
 
-	private Song getSong(int index) {
+	public Song getSong(int index) {
 		return playlist.get(index);
 	}
 
-	public void play() {
-		if(songplaycount > 6)
+	public void play(String song) {
+		if(songplaycount > 5)
+			return;   
+		Song s = find(song);
+		if(s == null)
 			return;
-		String path = "songfiles/LopingSting.mp3";    
 
-		File file = new File(path);
+		File file = new File(s.getPath());
 		URI uri = file.toURI();
 		System.out.println(uri);
 		Media media = new Media(uri.toString());
@@ -34,6 +36,14 @@ public class Playlist {
 		mediaPlayer.play();
 		
 		mediaPlayer.setOnEndOfMedia(new EndOfSongHandler());
+	}
+
+	public Song find(String songName){
+		for(int i = 0; i < playlist.size(); i++){
+			if(playlist.get(i).getName().equals(songName))
+				return playlist.get(i);
+		}
+		return null;
 	}
 
 	private class EndOfSongHandler implements Runnable {
