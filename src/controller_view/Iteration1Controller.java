@@ -14,6 +14,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import model.Playlist;
+import model.Registry;
 
 public class Iteration1Controller extends Application {
 
@@ -36,8 +37,8 @@ public class Iteration1Controller extends Application {
 		playlist = new Playlist();
 		BorderPane all = new BorderPane();
 		Scene scene = new Scene(all, 400, 300);
-		grid= new GridPane();
-		BorderPane.setMargin(grid, new Insets(10,10,10,10));
+		grid = new GridPane();
+		BorderPane.setMargin(grid, new Insets(10, 10, 10, 10));
 		loginButton = new Button("Login");
 		logoutButton = new Button("Log Out");
 		songSelectOne = new Button("Select Song One");
@@ -55,7 +56,7 @@ public class Iteration1Controller extends Application {
 		grid.add(songSelectOne, 0, 0);
 		grid.add(songSelectTwo, 1, 0);
 		grid.add(accountLabel, 0, 1);
-		grid.add(passLabel, 0,2);
+		grid.add(passLabel, 0, 2);
 		grid.add(accountName, 1, 1);
 		grid.add(password, 1, 2);
 		grid.add(loginButton, 1, 3);
@@ -75,31 +76,43 @@ public class Iteration1Controller extends Application {
 	}
 
 	private class ButtonListener implements EventHandler<ActionEvent> {
+		boolean loggedin = false;
 
 		@Override
 		public void handle(ActionEvent arg0) {
 			// TODO Auto-generated method stub
 			Button buttonClicked = (Button) arg0.getSource();
-			if(loginButton==buttonClicked) {
+			Registry reg = new Registry();
+			reg.addUser("Chris", "1");
+			reg.addUser("Devon", "22");
+			reg.addUser("River", "333");
+			reg.addUser("Ryan", "4444");
+			if (loginButton == buttonClicked) {
 				String acc = accountName.getText();
 				String pass = password.getText();
-				//authenticate
-				/*if(verified)
-				 * 
-				 *else{
-				 *loginStatus.setText("Log in failed");
-				 *}
-				 */
+				// authenticate
+				if (reg.search(acc, pass)) {
+					loggedin = true;
+					loginStatus.setText("Hi," + acc);
+				} else {
+					loginStatus.setText("Log in failed");
+					loggedin = false;
+				}
+
 			}
-			if(logoutButton==buttonClicked) {
-				//remove user
+			if (logoutButton == buttonClicked && loggedin) {
+				loggedin = false;
+				loginStatus.setText("Please come again");
 			}
-			if(songSelectOne==buttonClicked) {
-				//check if logged in else give an error
-				//send to song object to playlist?
+			else if (songSelectOne == buttonClicked && loggedin) {
+				// send to song object to playlist?
 				playlist.play();
+			} else if (songSelectOne == buttonClicked && !loggedin){
+				loginStatus.setText("Please login in to play a song");
 			}
-			if(songSelectTwo==buttonClicked) {
+			if (songSelectTwo == buttonClicked && loggedin) {
+			} else if (songSelectTwo == buttonClicked && !loggedin){
+				loginStatus.setText("Please login in to play a song");
 			}
 		}
 	}
