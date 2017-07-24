@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import model.Song;
+
+
 public class Playlist {
 	private ArrayList<Song> playlist;
 	private int songplaycount=0;
@@ -19,6 +21,8 @@ public class Playlist {
 	}
 
 	public void play() {
+		if(songplaycount > 6)
+			return;
 		String path = "songfiles/LopingSting.mp3";    
 
 		File file = new File(path);
@@ -28,7 +32,7 @@ public class Playlist {
 		MediaPlayer mediaPlayer = new MediaPlayer(media);
 		mediaPlayer.setAutoPlay(true);
 		mediaPlayer.play();
-
+		
 		mediaPlayer.setOnEndOfMedia(new EndOfSongHandler());
 	}
 
