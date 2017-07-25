@@ -1,10 +1,20 @@
 package controller_view;
 
+/**
+ * A JavaFX GUI for JukeBox that can play songs.
+ * This file also allows for a user to log on through
+ * a user name and password. After logging in the user
+ * can then choose songs to play.
+ * 
+ * @author Braxton Lazar, Allen Kim
+ * 
+ */
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -67,21 +77,26 @@ public class Iteration1Controller extends Application {
 		loginStatus = new Label("Please Log In");
 		Label accountLabel = new Label("Account Name");
 		Label passLabel = new Label("Password");
-		grid.add(songSelectOne, 0, 0);
-		grid.add(songSelectTwo, 1, 0);
-		grid.add(accountLabel, 0, 1);
-		grid.add(passLabel, 0, 2);
-		grid.add(accountName, 1, 1);
-		grid.add(password, 1, 2);
-		grid.add(loginButton, 1, 3);
-		grid.add(loginStatus, 1, 4);
-		grid.add(logoutButton, 1, 5);
+
+		grid.add(accountLabel, 0, 0);
+		grid.add(passLabel, 0, 1);
+		grid.add(accountName, 1, 0);
+		grid.add(password, 1, 1);
+		grid.add(loginButton, 1, 2);
+		grid.add(loginStatus, 1, 3);
+		grid.add(logoutButton, 1, 4);
+		GridPane songSelect=new GridPane();
+		songSelect.add(songSelectOne, 0, 0);
+		songSelect.add(new Label("   "), 1, 0);
+		songSelect.add(songSelectTwo, 2, 0);
+		songSelect.setAlignment(Pos.CENTER);
 		GridPane.setHalignment(accountLabel, HPos.RIGHT);
 		GridPane.setHalignment(passLabel, HPos.RIGHT);
-		accountName.setMaxWidth(140);
-		password.setMaxWidth(140);
+		accountName.setMaxWidth(160);
+		password.setMaxWidth(160);
 		grid.setHgap(10);
 		grid.setVgap(10);
+		all.setTop(songSelect);
 		all.setBottom(grid);
 		primaryStage.setScene(scene);
 
@@ -92,7 +107,7 @@ public class Iteration1Controller extends Application {
 	private class ButtonListener implements EventHandler<ActionEvent>{
 		boolean loggedin = false;
 		User account;
-		
+
 		@Override
 		public void handle(ActionEvent arg0) {
 			Button buttonClicked = (Button) arg0.getSource();
@@ -103,7 +118,7 @@ public class Iteration1Controller extends Application {
 				// authenticate
 				if ( account != null) {
 					loggedin = true;
-					loginStatus.setText("Hi," + account.getAccountName());
+					loginStatus.setText("Hi, " + account.getAccountName());
 				} else {
 					loginStatus.setText("Log in failed");
 					loggedin = false;
@@ -119,7 +134,7 @@ public class Iteration1Controller extends Application {
 					playlist.addToQueue("LopingSting");
 				}
 				account.playedSong();
-				
+
 			} else if (songSelectOne == buttonClicked && !loggedin){
 				loginStatus.setText("Please login in to play a song");
 			}

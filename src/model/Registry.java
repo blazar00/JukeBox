@@ -3,6 +3,15 @@ package model;
 import java.util.ArrayList;
 import model.User;
 
+/**
+ * 
+ * Class represents a list of all users and allows for the search
+ * of the users.
+ * 
+ * @author Braxton Lazar, Allen Kim
+ * 
+ */
+
 public class Registry {
 	ArrayList<User> users = new ArrayList<User>();
 	

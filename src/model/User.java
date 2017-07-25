@@ -1,5 +1,15 @@
 package model;
 
+/**
+*
+* This class represents a user for the JukeBox GUI. Each user
+* has an account name, a password, and a count of how many songs that user
+* played in a day.
+* 
+* @author Braxton Lazar, Allen Kim
+* 
+*/
+
 public class User {
 	private String accountName;
 	private String password;
