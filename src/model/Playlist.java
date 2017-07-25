@@ -9,6 +9,15 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import model.Song;
 
+/**
+*
+* This class represents a song queue for the Jukebox.
+* Songs are played in FIFO, first in first out, order.
+* 
+* @author Braxton Lazar, Allen Kim
+* 
+*/
+
 public class Playlist {
 	private ArrayList<Song> playlist = new ArrayList<Song>();
 	private ArrayList<Song> queue = new ArrayList<Song>();

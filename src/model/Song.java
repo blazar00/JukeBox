@@ -1,5 +1,13 @@
 package model;
 
+/**
+ *
+ * This class represents a song that is played on the jukebox.
+ * 
+ * @author Braxton Lazar, Allen Kim
+ * 
+ */
+
 public class Song {
 	private String name;
 	private String path;
