@@ -15,10 +15,12 @@ import model.User;
 public class Registry {
 	ArrayList<User> users = new ArrayList<User>();
 	
+	//Add a user to the registry
 	public void addUser(String account, String pass){
 		users.add(new User(account, pass));
 	}
 	
+	//Used to verify and check that user and pass are correct returns User object
 	public User search(String account, String pass){
 		for(int i = 0; i < users.size(); i++)
 			if(users.get(i).getAccountName().equals(account))

@@ -1,14 +1,26 @@
 package tests;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
+
 import org.junit.Test;
 
+import javafx.embed.swing.JFXPanel;
 import model.Playlist;
 import model.Registry;
 import model.Song;
 import model.User;
 
+/**
+ * 
+ * Class tests all files in the model package
+ * 
+ * @author Braxton Lazar, Allen Kim
+ * 
+ */
+
 public class Testing {
+	
+	JFXPanel fxPanel = new JFXPanel(); // this was the only way to test playlist.play
 	
     @Test
 	public void TestSong() {
@@ -17,16 +29,26 @@ public class Testing {
 		assertEquals(testing.getPath(), "songfiles/hello.mp3");
 		assertEquals(testing.getArtist(), "The Beatles");
 		assertEquals(testing.getTime(), 85);
+		assertTrue(testing.canBePlayed());
+		testing.played();
+		testing.played();
+		testing.played();
+		testing.played();
+		assertFalse(testing.canBePlayed());
 	}
 	
     @Test 
     public void TestPlaylist() {
     	Playlist testing = new Playlist();
+    	testing.play();
     	Song Loping = new Song("LopingSting", "songfiles/LopingSting.mp3", "Kevin MacLeod", 5);
     	testing.addSong(Loping);
     	assertEquals(testing.getSong(0), Loping);
     	testing.addToQueue("LopingSting");
     	assertEquals(testing.find("LopingSting"), Loping);
+    	testing.play();
+    	testing.addToQueue(null);
+    	assertEquals(testing.find("Test"), null);
     	//need to test play function
     }
     

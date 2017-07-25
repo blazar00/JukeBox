@@ -4,6 +4,7 @@ import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
 
+import javafx.application.Application;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import model.Song;
@@ -39,7 +40,7 @@ public class Playlist {
 	}
 
 	public void play() {
-		while(!queue.isEmpty()){
+		if(!queue.isEmpty()){
 			File file = new File(queue.get(0).getPath());
 			URI uri = file.toURI();
 			System.out.println(uri);
@@ -47,10 +48,8 @@ public class Playlist {
 			mediaPlayer = new MediaPlayer(media);
 			mediaPlayer.setAutoPlay(true);
 			mediaPlayer.play();
-			while(mediaPlayer.getStopTime().toSeconds() != queue.get(0).getTime()){}
 			mediaPlayer.setOnEndOfMedia(new EndOfSongHandler());
 			queue.remove(0);
-			
 		}
 	}
 

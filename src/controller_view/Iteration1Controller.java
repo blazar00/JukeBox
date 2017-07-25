@@ -16,6 +16,8 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -131,18 +133,52 @@ public class Iteration1Controller extends Application {
 			}
 			else if (songSelectOne == buttonClicked && loggedin) {
 				if(account.getSongsPlayed() < 3){
-					playlist.addToQueue("LopingSting");
+					Song s = playlist.find("LopingSting");
+					if(s.canBePlayed()){
+						playlist.addToQueue("LopingSting");
+						account.playedSong();
+						s.played();
+					}
+					else{
+						Alert dailyplaylimit= new Alert(AlertType.WARNING);
+						dailyplaylimit.setTitle("Warning");
+						dailyplaylimit.setHeaderText("This song has already been played 3 times today.");
+						dailyplaylimit.showAndWait();
+					}
 				}
-				account.playedSong();
+				else {
+					Alert dailyplaylimit= new Alert(AlertType.WARNING);
+					dailyplaylimit.setTitle("Warning");
+					dailyplaylimit.setHeaderText("Limit of 3 songs have been chosen today.");
+					dailyplaylimit.showAndWait();
+				}
+				
 
 			} else if (songSelectOne == buttonClicked && !loggedin){
 				loginStatus.setText("Please login in to play a song");
 			}
 			if (songSelectTwo == buttonClicked && loggedin) {
 				if(account.getSongsPlayed() < 3){
-					playlist.addToQueue("Pokemon Capture");
+					Song s = playlist.find("Pokemon Capture");
+					if(s.canBePlayed()){
+						playlist.addToQueue("Pokemon Capture");
+						account.playedSong();
+						s.played();
+					}
+					else{
+						Alert dailyplaylimit= new Alert(AlertType.WARNING);
+						dailyplaylimit.setTitle("Warning");
+						dailyplaylimit.setHeaderText("This song has already been played 3 times today.");
+						dailyplaylimit.showAndWait();
+					}
 				}
-				account.playedSong();
+				else {
+					Alert dailyplaylimit= new Alert(AlertType.INFORMATION);
+					dailyplaylimit.setTitle("Warning");
+					dailyplaylimit.setHeaderText("Limit of 3 songs have been chosen today.");
+					dailyplaylimit.showAndWait();
+				}
+				
 			} else if (songSelectTwo == buttonClicked && !loggedin){
 				loginStatus.setText("Please login in to play a song");
 			}
@@ -150,4 +186,5 @@ public class Iteration1Controller extends Application {
 		}
 	}
 }
+
 

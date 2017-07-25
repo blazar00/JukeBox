@@ -1,5 +1,7 @@
 package model;
 
+import java.time.LocalDate;
+
 /**
  *
  * This class represents a song that is played on the jukebox.
@@ -13,30 +15,59 @@ public class Song {
 	private String path;
 	private String artist;
 	private int time;
-	private int timesSelected; // for later
+	private LocalDate date = null;
+	private LocalDate lastPlayed = null;
+	private int timesPlayed;
 	
+	
+	//Song constructor
 	public Song(String n, String p, String a, int t){
 		name = n;
 		path = p;
 		artist = a;
 		time = t;
-		timesSelected = 0;
+		timesPlayed = 0;
 	}
 	
+	//Get the song name returns string
 	public String getName(){
 		return name;
 	}
 	
+	//Get the path of the song file returns string
 	public String getPath(){
 		return path;
 	}
 	
+	//Get the Song's artist returns string
 	public String getArtist(){
 		return artist;
 	}
 	
+	//Get the time of how long the song is in seconds returns an integer
 	public int getTime(){
 		return time;
+	}
+	
+	public void played(){
+		date = LocalDate.now();
+		if(lastPlayed == null){
+			lastPlayed = date;
+			timesPlayed++;
+		}
+		else if (date.compareTo(lastPlayed) == 1){
+			lastPlayed = date;
+			timesPlayed = 0;
+		}
+		else
+			timesPlayed++;
+		
+	}
+	
+	public boolean canBePlayed(){
+		if(timesPlayed < 3)
+			return true;
+		return false;
 	}
 
 }
