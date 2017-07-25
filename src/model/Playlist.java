@@ -3,7 +3,6 @@ package model;
 import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -11,8 +10,9 @@ import model.Song;
 
 public class Playlist {
 	private ArrayList<Song> playlist = new ArrayList<Song>();
-	private ArrayList<Song> queue = new ArrayList<Song>();
+	public ArrayList<Song> queue = new ArrayList<Song>();
 	private int songplaycount = 0;
+	private MediaPlayer mediaPlayer;
 
 	public void addSong(Song song) {
 		playlist.add(song);
@@ -35,11 +35,13 @@ public class Playlist {
 			URI uri = file.toURI();
 			System.out.println(uri);
 			Media media = new Media(uri.toString());
-			MediaPlayer mediaPlayer = new MediaPlayer(media);
+			mediaPlayer = new MediaPlayer(media);
 			mediaPlayer.setAutoPlay(true);
 			mediaPlayer.play();
+			while(mediaPlayer.getStopTime().toSeconds() != queue.get(0).getTime()){}
 			mediaPlayer.setOnEndOfMedia(new EndOfSongHandler());
 			queue.remove(0);
+			
 		}
 	}
 
@@ -56,7 +58,6 @@ public class Playlist {
 		public void run() {
 			songplaycount++;
 			System.out.println("Song ended, play song #" + songplaycount);
-
 		}
 
 	}
