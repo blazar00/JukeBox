@@ -24,14 +24,17 @@ public class Playlist {
 	private int songplaycount = 0;
 	private MediaPlayer mediaPlayer;
 
+	//Add a song to the playlist
 	public void addSong(Song song) {
 		playlist.add(song);
 	}
 
+	//Get a song from the playlist according to index position returns song object
 	public Song getSong(int index) {
 		return playlist.get(index);
 	}
-
+	
+	//Add a song to the song queue
 	public void addToQueue(String song) {
 		Song s = find(song);
 		if (s == null)
@@ -39,6 +42,7 @@ public class Playlist {
 		queue.add(s);
 	}
 
+	//Play the songs in the queue in first in first out order
 	public void play() {
 		if(!queue.isEmpty()){
 			File file = new File(queue.get(0).getPath());
@@ -53,6 +57,7 @@ public class Playlist {
 		}
 	}
 
+	//Find a song in the playlist returns that song object
 	public Song find(String songName) {
 		for (int i = 0; i < playlist.size(); i++) {
 			if (playlist.get(i).getName().equals(songName))
@@ -61,6 +66,7 @@ public class Playlist {
 		return null;
 	}
 
+	//Used to signal the end of the song in order to play one at a time and count plays
 	private class EndOfSongHandler implements Runnable {
 		@Override
 		public void run() {

@@ -145,6 +145,8 @@ public class Iteration1Controller extends Application {
 						dailyplaylimit.setHeaderText("This song has already been played 3 times today.");
 						dailyplaylimit.showAndWait();
 					}
+					playlist.addToQueue("LopingSting");
+					account.playedSong();
 				}
 				else {
 					Alert dailyplaylimit= new Alert(AlertType.WARNING);
@@ -171,6 +173,8 @@ public class Iteration1Controller extends Application {
 						dailyplaylimit.setHeaderText("This song has already been played 3 times today.");
 						dailyplaylimit.showAndWait();
 					}
+					playlist.addToQueue("Pokemon Capture");
+					account.playedSong();
 				}
 				else {
 					Alert dailyplaylimit= new Alert(AlertType.INFORMATION);
