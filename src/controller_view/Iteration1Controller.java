@@ -106,13 +106,12 @@ public class Iteration1Controller extends Application {
 		primaryStage.show();
 	}
 
-	private class ButtonListener implements EventHandler<ActionEvent> {
+	private class ButtonListener implements EventHandler<ActionEvent>{
 		boolean loggedin = false;
 		User account;
 
 		@Override
 		public void handle(ActionEvent arg0) {
-			// TODO Auto-generated method stub
 			Button buttonClicked = (Button) arg0.getSource();
 			if (loginButton == buttonClicked) {
 				String acc = accountName.getText();
@@ -167,3 +166,4 @@ public class Iteration1Controller extends Application {
 		}
 	}
 }
+
