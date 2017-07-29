@@ -29,6 +29,7 @@ import model.Playlist;
 import model.Registry;
 import model.Song;
 import model.User;
+import view.SongView;
 
 public class Iteration1Controller extends Application {
 
@@ -42,6 +43,8 @@ public class Iteration1Controller extends Application {
 	private GridPane grid;
 	private Playlist playlist;
 	private Registry reg;
+	private Button play;
+	private SongView songview;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -55,14 +58,15 @@ public class Iteration1Controller extends Application {
 		playlist.addSong(new Song("Danse Macabre", "songfiles/DanseMacabreViolinHook.mp3", "Kevin MacLeod", 34));
 		playlist.addSong(new Song("Determined Tumbao", "songfiles/DeterminedTumbao.mp3", "FreePlay Music", 20));
 		playlist.addSong(new Song("Swing Cheese", "songfiles/SwingCheese.mp3", "FreePlay Music", 15));
-		playlist.addSong(new Song("The Curtain Rises", "songfiles/UntameableFire.mp3", "Pierre Langer", 282));
+		playlist.addSong(new Song("Untameable Fire", "songfiles/UntameableFire.mp3", "Pierre Langer", 282));
+		playlist.addSong(new Song("The Curtain Rises", "songfiles/TheCurtainRises.mp3", "Kevin MacLeod", 28));
 		reg = new Registry();
 		reg.addUser("Chris", "1");
 		reg.addUser("Devon", "22");
 		reg.addUser("River", "333");
 		reg.addUser("Ryan", "4444");
 		BorderPane all = new BorderPane();
-		Scene scene = new Scene(all, 400, 300);
+		Scene scene = new Scene(all, 400, 600);
 		grid = new GridPane();
 		BorderPane.setMargin(grid, new Insets(10, 10, 10, 10));
 		loginButton = new Button("Login");
@@ -87,18 +91,24 @@ public class Iteration1Controller extends Application {
 		grid.add(loginButton, 1, 2);
 		grid.add(loginStatus, 1, 3);
 		grid.add(logoutButton, 1, 4);
+		/*
 		GridPane songSelect=new GridPane();
 		songSelect.add(songSelectOne, 0, 0);
 		songSelect.add(new Label("   "), 1, 0);
 		songSelect.add(songSelectTwo, 2, 0);
 		songSelect.setAlignment(Pos.CENTER);
+		*/
 		GridPane.setHalignment(accountLabel, HPos.RIGHT);
 		GridPane.setHalignment(passLabel, HPos.RIGHT);
 		accountName.setMaxWidth(160);
 		password.setMaxWidth(160);
 		grid.setHgap(10);
 		grid.setVgap(10);
-		all.setTop(songSelect);
+		songview= new SongView();
+		play = new Button("Play");
+		play.setOnAction(handler);
+		all.setCenter(play);
+		all.setTop(songview);
 		all.setBottom(grid);
 		primaryStage.setScene(scene);
 
@@ -131,6 +141,37 @@ public class Iteration1Controller extends Application {
 				loggedin = false;
 				loginStatus.setText("Please come again");
 			}
+			else if (play == buttonClicked && loggedin) {
+				if(account.getSongsPlayed() < 3){
+					String songtitle = ((Song) songview.getSelectionModel().getSelectedItem()).getName();
+					System.out.println(songtitle);
+					Song s = playlist.find(songtitle);
+					if(s.canBePlayed()){
+						playlist.addToQueue(songtitle);
+						account.playedSong();
+						s.played();
+					}
+					else{
+						Alert dailyplaylimit= new Alert(AlertType.WARNING);
+						dailyplaylimit.setTitle("Warning");
+						dailyplaylimit.setHeaderText("This song has already been played 3 times today.");
+						dailyplaylimit.showAndWait();
+					}
+				}
+				else {
+					Alert dailyplaylimit= new Alert(AlertType.WARNING);
+					dailyplaylimit.setTitle("Warning");
+					dailyplaylimit.setHeaderText("Limit of 3 songs have been chosen today.");
+					dailyplaylimit.showAndWait();
+				}
+				
+
+			} else if (play == buttonClicked && !loggedin){
+				loginStatus.setText("Please login in to play a song");
+			}
+			
+			
+			/*
 			else if (songSelectOne == buttonClicked && loggedin) {
 				if(account.getSongsPlayed() < 3){
 					Song s = playlist.find("LopingSting");
@@ -182,6 +223,7 @@ public class Iteration1Controller extends Application {
 			} else if (songSelectTwo == buttonClicked && !loggedin){
 				loginStatus.setText("Please login in to play a song");
 			}
+			*/
 			playlist.play();
 		}
 	}
