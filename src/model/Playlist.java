@@ -3,8 +3,6 @@ package model;
 import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
-
-import javafx.application.Application;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import model.Song;
@@ -24,7 +22,7 @@ public class Playlist extends Thread{
 	private int songplaycount = 0;
 	private MediaPlayer mediaPlayer;
 	
-	Playlist(){
+	public Playlist(){
 		super();
 		start();
 	}

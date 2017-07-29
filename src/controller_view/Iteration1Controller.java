@@ -14,6 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -23,6 +24,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Playlist;
 import model.Registry;
@@ -37,8 +39,6 @@ public class Iteration1Controller extends Application {
 	private PasswordField password;
 	private Button loginButton;
 	private Button logoutButton;
-	private Button songSelectOne;
-	private Button songSelectTwo;
 	private Label loginStatus;
 	private GridPane grid;
 	private Playlist playlist;
@@ -67,24 +67,20 @@ public class Iteration1Controller extends Application {
 		reg.addUser("River", "333");
 		reg.addUser("Ryan", "4444");
 		BorderPane all = new BorderPane();
-		Scene scene = new Scene(all, 1000, 600);
+		Scene scene = new Scene(all, 1000, 450);
 		grid = new GridPane();
+		primaryStage.setTitle("JukeBox");
 		BorderPane.setMargin(grid, new Insets(10, 10, 10, 10));
 		loginButton = new Button("Login");
 		logoutButton = new Button("Log Out");
-		songSelectOne = new Button("Select Song One");
-		songSelectTwo = new Button("Select Song Two");
 		ButtonListener handler = new ButtonListener();
 		loginButton.setOnAction(handler);
 		logoutButton.setOnAction(handler);
-		songSelectOne.setOnAction(handler);
-		songSelectTwo.setOnAction(handler);
 		accountName = new TextField("");
 		password = new PasswordField();
 		loginStatus = new Label("Please Log In");
 		Label accountLabel = new Label("Account Name");
 		Label passLabel = new Label("Password");
-
 		grid.add(accountLabel, 0, 0);
 		grid.add(passLabel, 0, 1);
 		grid.add(accountName, 1, 0);
@@ -92,13 +88,6 @@ public class Iteration1Controller extends Application {
 		grid.add(loginButton, 1, 2);
 		grid.add(loginStatus, 1, 3);
 		grid.add(logoutButton, 1, 4);
-		/*
-		GridPane songSelect=new GridPane();
-		songSelect.add(songSelectOne, 0, 0);
-		songSelect.add(new Label("   "), 1, 0);
-		songSelect.add(songSelectTwo, 2, 0);
-		songSelect.setAlignment(Pos.CENTER);
-		*/
 		GridPane.setHalignment(accountLabel, HPos.RIGHT);
 		GridPane.setHalignment(passLabel, HPos.RIGHT);
 		accountName.setMaxWidth(160);
@@ -106,13 +95,24 @@ public class Iteration1Controller extends Application {
 		grid.setHgap(10);
 		grid.setVgap(10);
 		songview = new SongView();
+		songview.getSelectionModel().selectFirst();
 		queueview = new QueueView(playlist);
 		play = new Button("Play");
 		play.setOnAction(handler);
-		all.setCenter(play);
-		all.setLeft(songview);
-		all.setRight(queueview);
-		all.setBottom(grid);
+		play.setMaxWidth(300);
+		play.setMaxHeight(200);
+		VBox vboxcenter = new VBox();
+		vboxcenter.getChildren().addAll(play,grid);
+		vboxcenter.setAlignment(Pos.CENTER);
+		vboxcenter.setSpacing(20);
+		grid.setAlignment(Pos.CENTER);
+		VBox vboxleft = new VBox();
+		vboxleft.getChildren().addAll(new Label("Choose a Song"),songview);
+		VBox vboxright = new VBox();
+		vboxright.getChildren().addAll(new Label("Currently Playing"),queueview);
+		all.setCenter(vboxcenter);
+		all.setLeft(vboxleft);
+		all.setRight(vboxright);
 		primaryStage.setScene(scene);
 
 		// Don't forget to show the running application:
@@ -153,6 +153,8 @@ public class Iteration1Controller extends Application {
 						playlist.addToQueue(songtitle);
 						account.playedSong();
 						s.played();
+						songview.refresh();
+						queueview.refresh();
 					}
 					else{
 						Alert dailyplaylimit= new Alert(AlertType.WARNING);
@@ -171,61 +173,6 @@ public class Iteration1Controller extends Application {
 			} else if (play == buttonClicked && !loggedin){
 				loginStatus.setText("Please login in to play a song");
 			}
-			
-			
-			/*
-			else if (songSelectOne == buttonClicked && loggedin) {
-				if(account.getSongsPlayed() < 3){
-					Song s = playlist.find("LopingSting");
-					if(s.canBePlayed()){
-						playlist.addToQueue("LopingSting");
-						account.playedSong();
-						s.played();
-					}
-					else{
-						Alert dailyplaylimit= new Alert(AlertType.WARNING);
-						dailyplaylimit.setTitle("Warning");
-						dailyplaylimit.setHeaderText("This song has already been played 3 times today.");
-						dailyplaylimit.showAndWait();
-					}
-				}
-				else {
-					Alert dailyplaylimit= new Alert(AlertType.WARNING);
-					dailyplaylimit.setTitle("Warning");
-					dailyplaylimit.setHeaderText("Limit of 3 songs have been chosen today.");
-					dailyplaylimit.showAndWait();
-				}
-				
-
-			} else if (songSelectOne == buttonClicked && !loggedin){
-				loginStatus.setText("Please login in to play a song");
-			}
-			if (songSelectTwo == buttonClicked && loggedin) {
-				if(account.getSongsPlayed() < 3){
-					Song s = playlist.find("Pokemon Capture");
-					if(s.canBePlayed()){
-						playlist.addToQueue("Pokemon Capture");
-						account.playedSong();
-						s.played();
-					}
-					else{
-						Alert dailyplaylimit= new Alert(AlertType.WARNING);
-						dailyplaylimit.setTitle("Warning");
-						dailyplaylimit.setHeaderText("This song has already been played 3 times today.");
-						dailyplaylimit.showAndWait();
-					}
-				}
-				else {
-					Alert dailyplaylimit= new Alert(AlertType.INFORMATION);
-					dailyplaylimit.setTitle("Warning");
-					dailyplaylimit.setHeaderText("Limit of 3 songs have been chosen today.");
-					dailyplaylimit.showAndWait();
-				}
-				
-			} else if (songSelectTwo == buttonClicked && !loggedin){
-				loginStatus.setText("Please login in to play a song");
-			}
-			*/
 			playlist.play();
 		}
 	}
