@@ -14,7 +14,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -29,6 +28,7 @@ import model.Playlist;
 import model.Registry;
 import model.Song;
 import model.User;
+import view.QueueView;
 import view.SongView;
 
 public class Iteration1Controller extends Application {
@@ -45,6 +45,7 @@ public class Iteration1Controller extends Application {
 	private Registry reg;
 	private Button play;
 	private SongView songview;
+	private QueueView queueview;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -66,7 +67,7 @@ public class Iteration1Controller extends Application {
 		reg.addUser("River", "333");
 		reg.addUser("Ryan", "4444");
 		BorderPane all = new BorderPane();
-		Scene scene = new Scene(all, 400, 600);
+		Scene scene = new Scene(all, 1000, 600);
 		grid = new GridPane();
 		BorderPane.setMargin(grid, new Insets(10, 10, 10, 10));
 		loginButton = new Button("Login");
@@ -104,11 +105,13 @@ public class Iteration1Controller extends Application {
 		password.setMaxWidth(160);
 		grid.setHgap(10);
 		grid.setVgap(10);
-		songview= new SongView();
+		songview = new SongView();
+		queueview = new QueueView(playlist);
 		play = new Button("Play");
 		play.setOnAction(handler);
 		all.setCenter(play);
-		all.setTop(songview);
+		all.setLeft(songview);
+		all.setRight(queueview);
 		all.setBottom(grid);
 		primaryStage.setScene(scene);
 
@@ -164,7 +167,6 @@ public class Iteration1Controller extends Application {
 					dailyplaylimit.setHeaderText("Limit of 3 songs have been chosen today.");
 					dailyplaylimit.showAndWait();
 				}
-				
 
 			} else if (play == buttonClicked && !loggedin){
 				loginStatus.setText("Please login in to play a song");

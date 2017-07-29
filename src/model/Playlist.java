@@ -18,11 +18,16 @@ import model.Song;
 * 
 */
 
-public class Playlist {
+public class Playlist extends Thread{
 	private ArrayList<Song> playlist = new ArrayList<Song>();
 	public ArrayList<Song> queue = new ArrayList<Song>();
 	private int songplaycount = 0;
 	private MediaPlayer mediaPlayer;
+	
+	Playlist(){
+		super();
+		start();
+	}
 
 	//Add a song to the playlist
 	public void addSong(Song song) {
@@ -47,11 +52,17 @@ public class Playlist {
 		if(!queue.isEmpty()){
 			File file = new File(queue.get(0).getPath());
 			URI uri = file.toURI();
-			System.out.println(uri);
+			//System.out.println(uri);
 			Media media = new Media(uri.toString());
 			mediaPlayer = new MediaPlayer(media);
 			mediaPlayer.setAutoPlay(true);
 			mediaPlayer.play();
+			try {
+				this.sleep(queue.get(0).getTime()*1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			mediaPlayer.setOnEndOfMedia(new EndOfSongHandler());
 			queue.remove(0);
 		}

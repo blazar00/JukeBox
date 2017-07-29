@@ -1,19 +1,21 @@
 package view;
 
+import java.util.ArrayList;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import model.Playlist;
 import model.Song;
-import model.SongList;
 
-public class SongView extends TableView<Song> {
+public class QueueView extends TableView<Song> {
 	
-	private ObservableList <Song> songs;
-	private SongList songlist;
+	private ObservableList <Song> queue;
+	private ArrayList<Song> playlist;
 	
-	public SongView (){
+	public QueueView (Playlist p){
 		TableColumn <Song, String> name = new TableColumn<>("Title");
 		TableColumn <Song, String> artist = new TableColumn<>("Artist");
 		TableColumn <Song, Integer> time = new TableColumn<>("Time");
@@ -25,13 +27,13 @@ public class SongView extends TableView<Song> {
 		artist.setCellValueFactory(new PropertyValueFactory<Song,String>("artist"));
 		time.setCellValueFactory(new PropertyValueFactory<Song,Integer>("time"));
 		
-		songlist = new SongList();
-		songs = FXCollections.observableArrayList(); 
-		for(int i = 0; i<songlist.size();i++){
-			songs.add(songlist.get(i));
+		playlist = p.queue;
+		queue = FXCollections.observableArrayList(); 
+		for(int i = 0; i<playlist.size();i++){
+			queue.add(playlist.get(i));
 		}
 		
-		this.setItems(songs);
+		this.setItems(queue);
 	}
 
 }

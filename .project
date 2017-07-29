@@ -14,4 +14,16 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>src/view</name>
+			<type>2</type>
+			<location>/Users/Braxton/Documents/335repos/jukebox-kimlazar/src/view</location>
+		</link>
+		<link>
+			<name>src/model/SongList.java</name>
+			<type>1</type>
+			<location>/Users/Braxton/Documents/335repos/jukebox-kimlazar/src/model/SongList.java</location>
+		</link>
+	</linkedResources>
 </projectDescription>
