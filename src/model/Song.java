@@ -49,6 +49,11 @@ public class Song {
 		return time;
 	}
 	
+	//Get how many times song was played that day
+	public int getTimesPlayed(){
+		return timesPlayed;
+	}
+	
 	public void played(){
 		date = LocalDate.now();
 		if(lastPlayed == null){

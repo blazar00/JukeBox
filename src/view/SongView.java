@@ -17,10 +17,10 @@ public class SongView extends TableView {
 		TableColumn <Song, String> name = new TableColumn<>("Title");
 		TableColumn <Song, String> artist = new TableColumn<>("Artist");
 		TableColumn <Song, Integer> time = new TableColumn<>("Time");
-		TableColumn <Song, Integer> timesPlayed = new TableColumn<>("Play Count");
+		TableColumn <Song, Integer> count = new TableColumn<>("Play Count");
 		
-		this.getColumns().addAll(timesPlayed,name,artist,time);
-		timesPlayed.setCellValueFactory(new PropertyValueFactory<Song,Integer>("timesPlayed"));
+		this.getColumns().addAll(count,name,artist,time);
+		count.setCellValueFactory(new PropertyValueFactory<Song,Integer>("timesPlayed"));
 		name.setCellValueFactory(new PropertyValueFactory<Song,String>("name"));
 		artist.setCellValueFactory(new PropertyValueFactory<Song,String>("artist"));
 		time.setCellValueFactory(new PropertyValueFactory<Song,Integer>("time"));
