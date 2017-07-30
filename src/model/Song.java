@@ -15,17 +15,19 @@ public class Song {
 	private String path;
 	private String artist;
 	private int time;
+	private String timeStr;
 	private LocalDate date = null;
 	private LocalDate lastPlayed = null;
 	private int timesPlayed;
 	
 	
 	//Song constructor
-	public Song(String n, String p, String a, int t){
+	public Song(String n, String p, String a, int t, String tStr){
 		this.name = n;
 		this.path = p;
 		this.artist = a;
 		this.time = t;
+		this.timeStr = tStr;
 		this.timesPlayed = 0;
 	}
 	
@@ -47,6 +49,10 @@ public class Song {
 	//Get the time of how long the song is in seconds returns an integer
 	public int getTime(){
 		return time;
+	}
+	
+	public String getTimeStr(){
+		return timeStr;
 	}
 	
 	//Get how many times song was played that day

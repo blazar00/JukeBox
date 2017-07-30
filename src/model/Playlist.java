@@ -4,9 +4,12 @@ import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
 
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import model.Song;
+import view.QueueView;
 
 /**
  *
@@ -23,23 +26,27 @@ public class Playlist extends Thread {
 	private int songplaycount = 0;
 	private MediaPlayer mediaPlayer = null;
 	private Song playingSong = null;
+	public QueueView queueview = new QueueView(queue);
+	public VBox v;
+	private Label l = new Label("Songs in Queue");
 
-	public Playlist(){
+	public Playlist(VBox box){
 		super();
 		this.setDaemon(true);
 		this.start();
 		addDefaultSongs();
+		v = box;
 	}
 
 	//Setup up a playlist with a bunch of songs
 	public void addDefaultSongs(){
-		addSong(new Song("LopingSting", "songfiles/LopingSting.mp3", "Kevin MacLeod", 5));
-		addSong(new Song("Pokemon Capture", "songfiles/Capture.mp3", "Pikachu", 5));
-		addSong(new Song("Danse Macabre", "songfiles/DanseMacabreViolinHook.mp3", "Kevin MacLeod", 34));
-		addSong(new Song("Determined Tumbao", "songfiles/DeterminedTumbao.mp3", "FreePlay Music", 20));
-		addSong(new Song("Swing Cheese", "songfiles/SwingCheese.mp3", "FreePlay Music", 15));
-		addSong(new Song("Untameable Fire", "songfiles/UntameableFire.mp3", "Pierre Langer", 282));
-		addSong(new Song("The Curtain Rises", "songfiles/TheCurtainRises.mp3", "Kevin MacLeod", 28));
+		addSong(new Song("LopingSting", "songfiles/LopingSting.mp3", "Kevin MacLeod", 5, "0:05"));
+		addSong(new Song("Pokemon Capture", "songfiles/Capture.mp3", "Pikachu", 5, "0:05"));
+		addSong(new Song("Danse Macabre", "songfiles/DanseMacabreViolinHook.mp3", "Kevin MacLeod", 34, "0:34"));
+		addSong(new Song("Determined Tumbao", "songfiles/DeterminedTumbao.mp3", "FreePlay Music", 20, "0:20"));
+		addSong(new Song("Swing Cheese", "songfiles/SwingCheese.mp3", "FreePlay Music", 15, "0:15"));
+		addSong(new Song("Untameable Fire", "songfiles/UntameableFire.mp3", "Pierre Langer", 282, "4:42"));
+		addSong(new Song("The Curtain Rises", "songfiles/TheCurtainRises.mp3", "Kevin MacLeod", 28, "0:28"));
 	}
 
 	// Add a song to the playlist
@@ -59,7 +66,9 @@ public class Playlist extends Thread {
 		if (s == null)
 			return;
 		queue.add(s);
-		//queueviewer refresh
+		queueview = new QueueView(queue);
+		v.getChildren().clear();
+		v.getChildren().addAll(l, queueview);
 		play();
 	}
 
@@ -75,13 +84,7 @@ public class Playlist extends Thread {
 			mediaPlayer = new MediaPlayer(media);
 			mediaPlayer.setAutoPlay(true);
 			mediaPlayer.play();
-			try {
-				Playlist.sleep(s.getTime());
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			mediaPlayer.setOnEndOfMedia(new EndOfSongHandler());
+			mediaPlayer.setOnEndOfMedia( new EndOfSongHandler());
 		}
 	}
 
@@ -97,12 +100,13 @@ public class Playlist extends Thread {
 	// Used to signal the end of the song in order to play one at a time and
 	// count plays
 	private class EndOfSongHandler implements Runnable {
-		@Override
 		public void run() {
 			songplaycount++;
 			queue.remove(0);
-			//queueviewer refresh
 			playingSong = null;
+			queueview = new QueueView(queue);
+			v.getChildren().clear();
+			v.getChildren().addAll(l, queueview);
 			System.out.println("Song ended, play song #" + songplaycount);
 			play();
 		}

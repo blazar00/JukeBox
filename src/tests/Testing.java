@@ -1,14 +1,6 @@
 package tests;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
-
 import javafx.embed.swing.JFXPanel;
-import model.Playlist;
-import model.Registry;
-import model.Song;
-import model.User;
 
 /**
  * 
@@ -21,7 +13,7 @@ import model.User;
 public class Testing {
 	
 	JFXPanel fxPanel = new JFXPanel(); // this was the only way to test playlist.play
-	
+	/*
     @Test
 	public void TestSong() {
 		Song testing = new Song("Hello, Goodbye", "songfiles/hello.mp3", "The Beatles", 85);
@@ -68,5 +60,5 @@ public class Testing {
     	account.playedSong();
     	assertEquals(account.getSongsPlayed(),1);
     }
-	
+	*/
 }

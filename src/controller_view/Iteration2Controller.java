@@ -1,6 +1,5 @@
 package controller_view;
 
-import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -22,7 +21,6 @@ import model.Playlist;
 import model.Registry;
 import model.Song;
 import model.User;
-import view.QueueView;
 import view.SongView;
 
 /**
@@ -35,7 +33,7 @@ import view.SongView;
  * 
  */
 
-public class Iteration1Controller extends Application {
+public class Iteration2Controller extends Application {
 
 	private TextField accountName;
 	private PasswordField password;
@@ -47,7 +45,7 @@ public class Iteration1Controller extends Application {
 	private Registry reg;
 	private Button play;
 	private SongView songview;
-	private QueueView queueview;
+	VBox vboxright = new VBox();
 
 	public static void main(String[] args) {
 		launch(args);
@@ -55,7 +53,7 @@ public class Iteration1Controller extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		playlist = new Playlist();
+		playlist = new Playlist(vboxright);
 		reg = new Registry();
 		BorderPane all = new BorderPane();
 		Scene scene = new Scene(all, 1000, 450);
@@ -87,7 +85,7 @@ public class Iteration1Controller extends Application {
 		grid.setVgap(10);
 		songview = new SongView(playlist);
 		songview.getSelectionModel().selectFirst();
-		queueview = new QueueView(playlist);
+		//queueview = new QueueView(playlist.getQueue());
 		play = new Button("Play");
 		play.setOnAction(handler);
 		play.setMaxWidth(300);
@@ -98,9 +96,8 @@ public class Iteration1Controller extends Application {
 		vboxcenter.setSpacing(20);
 		grid.setAlignment(Pos.CENTER);
 		VBox vboxleft = new VBox();
-		vboxleft.getChildren().addAll(new Label("Choose a Song"),songview);
-		VBox vboxright = new VBox();
-		vboxright.getChildren().addAll(new Label("Currently Playing"),queueview);
+		vboxleft.getChildren().addAll(new Label("Choose a Song"), songview);
+		vboxright.getChildren().addAll(new Label("Songs in Queue"), playlist.queueview);
 		all.setCenter(vboxcenter);
 		all.setLeft(vboxleft);
 		all.setRight(vboxright);
@@ -141,15 +138,9 @@ public class Iteration1Controller extends Application {
 					Song s = playlist.find(songtitle);
 					if(s.canBePlayed()){
 						playlist.addToQueue(songtitle);
-						queueview.refresh();
 						account.playedSong();
 						s.played();
-						songview.refresh();						
-						//testing
-						ArrayList<Song> songlist = songview.getList();
-						System.out.println(songlist.get(0).toString()+songlist.get(0).getTimesPlayed());
-						ArrayList<Song> queuelist= queueview.getList();
-						System.out.println(queuelist.get(0).toString());
+						songview.refresh();
 					}
 					else{
 						Alert dailyplaylimit= new Alert(AlertType.WARNING);
