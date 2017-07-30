@@ -22,11 +22,11 @@ public class Song {
 	
 	//Song constructor
 	public Song(String n, String p, String a, int t){
-		name = n;
-		path = p;
-		artist = a;
-		time = t;
-		timesPlayed = 0;
+		this.name = n;
+		this.path = p;
+		this.artist = a;
+		this.time = t;
+		this.timesPlayed = 0;
 	}
 	
 	//Get the song name returns string
@@ -73,6 +73,10 @@ public class Song {
 		if(timesPlayed < 3)
 			return true;
 		return false;
+	}
+	
+	public String toString(){
+		return name+"- "+artist;
 	}
 
 }

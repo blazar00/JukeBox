@@ -1,14 +1,6 @@
 package controller_view;
 
-/**
- * A JavaFX GUI for JukeBox that can play songs.
- * This file also allows for a user to log on through
- * a user name and password. After logging in the user
- * can then choose songs to play.
- * 
- * @author Braxton Lazar, Allen Kim
- * 
- */
+import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -33,6 +25,16 @@ import model.User;
 import view.QueueView;
 import view.SongView;
 
+/**
+ * A JavaFX GUI for JukeBox that can play songs.
+ * This file also allows for a user to log on through
+ * a user name and password. After logging in the user
+ * can then choose songs to play.
+ * 
+ * @author Braxton Lazar, Allen Kim
+ * 
+ */
+
 public class Iteration1Controller extends Application {
 
 	private TextField accountName;
@@ -54,18 +56,7 @@ public class Iteration1Controller extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		playlist = new Playlist();
-		playlist.addSong(new Song("LopingSting", "songfiles/LopingSting.mp3", "Kevin MacLeod", 5));
-		playlist.addSong(new Song("Pokemon Capture", "songfiles/Capture.mp3", "Pikachu", 5));
-		playlist.addSong(new Song("Danse Macabre", "songfiles/DanseMacabreViolinHook.mp3", "Kevin MacLeod", 34));
-		playlist.addSong(new Song("Determined Tumbao", "songfiles/DeterminedTumbao.mp3", "FreePlay Music", 20));
-		playlist.addSong(new Song("Swing Cheese", "songfiles/SwingCheese.mp3", "FreePlay Music", 15));
-		playlist.addSong(new Song("Untameable Fire", "songfiles/UntameableFire.mp3", "Pierre Langer", 282));
-		playlist.addSong(new Song("The Curtain Rises", "songfiles/TheCurtainRises.mp3", "Kevin MacLeod", 28));
 		reg = new Registry();
-		reg.addUser("Chris", "1");
-		reg.addUser("Devon", "22");
-		reg.addUser("River", "333");
-		reg.addUser("Ryan", "4444");
 		BorderPane all = new BorderPane();
 		Scene scene = new Scene(all, 1000, 450);
 		grid = new GridPane();
@@ -94,7 +85,7 @@ public class Iteration1Controller extends Application {
 		password.setMaxWidth(160);
 		grid.setHgap(10);
 		grid.setVgap(10);
-		songview = new SongView();
+		songview = new SongView(playlist);
 		songview.getSelectionModel().selectFirst();
 		queueview = new QueueView(playlist);
 		play = new Button("Play");
@@ -138,7 +129,6 @@ public class Iteration1Controller extends Application {
 					loginStatus.setText("Log in failed");
 					loggedin = false;
 				}
-
 			}
 			else if (logoutButton == buttonClicked && loggedin) {
 				loggedin = false;
@@ -151,10 +141,15 @@ public class Iteration1Controller extends Application {
 					Song s = playlist.find(songtitle);
 					if(s.canBePlayed()){
 						playlist.addToQueue(songtitle);
+						queueview.refresh();
 						account.playedSong();
 						s.played();
-						songview.refresh();
-						queueview.refresh();
+						songview.refresh();						
+						//testing
+						ArrayList<Song> songlist = songview.getList();
+						System.out.println(songlist.get(0).toString()+songlist.get(0).getTimesPlayed());
+						ArrayList<Song> queuelist= queueview.getList();
+						System.out.println(queuelist.get(0).toString());
 					}
 					else{
 						Alert dailyplaylimit= new Alert(AlertType.WARNING);
@@ -169,11 +164,10 @@ public class Iteration1Controller extends Application {
 					dailyplaylimit.setHeaderText("Limit of 3 songs have been chosen today.");
 					dailyplaylimit.showAndWait();
 				}
-
-			} else if (play == buttonClicked && !loggedin){
+			} 
+			else if (play == buttonClicked && !loggedin){
 				loginStatus.setText("Please login in to play a song");
 			}
-			playlist.play();
 		}
 	}
 }

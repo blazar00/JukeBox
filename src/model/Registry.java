@@ -13,7 +13,18 @@ import model.User;
  */
 
 public class Registry {
-	ArrayList<User> users = new ArrayList<User>();
+	private ArrayList<User> users;
+	public Registry() {
+		users = new ArrayList<User>();
+		addDefaultUsers();
+	}
+	
+	private void addDefaultUsers(){
+		addUser("Chris", "1");
+		addUser("Devon", "22");
+		addUser("River", "333");
+		addUser("Ryan", "4444");
+	}
 	
 	//Add a user to the registry
 	public void addUser(String account, String pass){

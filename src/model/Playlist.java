@@ -19,15 +19,20 @@ import model.Song;
 
 public class Playlist extends Thread {
 	private ArrayList<Song> playlist = new ArrayList<Song>();
-	public ArrayList<Song> queue = new ArrayList<Song>();
+	private ArrayList<Song> queue = new ArrayList<Song>();
 	private int songplaycount = 0;
 	private MediaPlayer mediaPlayer = null;
 	private Song playingSong = null;
-	
+
 	public Playlist(){
 		super();
 		this.setDaemon(true);
 		this.start();
+		addDefaultSongs();
+	}
+
+	//Setup up a playlist with a bunch of songs
+	public void addDefaultSongs(){
 		addSong(new Song("LopingSting", "songfiles/LopingSting.mp3", "Kevin MacLeod", 5));
 		addSong(new Song("Pokemon Capture", "songfiles/Capture.mp3", "Pikachu", 5));
 		addSong(new Song("Danse Macabre", "songfiles/DanseMacabreViolinHook.mp3", "Kevin MacLeod", 34));
@@ -54,29 +59,29 @@ public class Playlist extends Thread {
 		if (s == null)
 			return;
 		queue.add(s);
+		//queueviewer refresh
 		play();
 	}
 
 	// Play the songs in the queue in first in first out order
-
 	public void play() {
 		if (queue.isEmpty() == false && playingSong == null) {
-				Song s = queue.get(0);
-				playingSong = s;
-				File file = new File(s.getPath());
-				URI uri = file.toURI();
-				//System.out.println(uri);
-				Media media = new Media(uri.toString());
-				mediaPlayer = new MediaPlayer(media);
-				mediaPlayer.setAutoPlay(true);
-				mediaPlayer.play();
-				try {
-					Playlist.sleep(s.getTime());
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				mediaPlayer.setOnEndOfMedia(new EndOfSongHandler());
+			Song s = queue.get(0);
+			playingSong = s;
+			File file = new File(s.getPath());
+			URI uri = file.toURI();
+			//System.out.println(uri);
+			Media media = new Media(uri.toString());
+			mediaPlayer = new MediaPlayer(media);
+			mediaPlayer.setAutoPlay(true);
+			mediaPlayer.play();
+			try {
+				Playlist.sleep(s.getTime());
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			mediaPlayer.setOnEndOfMedia(new EndOfSongHandler());
 		}
 	}
 
@@ -96,11 +101,21 @@ public class Playlist extends Thread {
 		public void run() {
 			songplaycount++;
 			queue.remove(0);
+			//queueviewer refresh
 			playingSong = null;
 			System.out.println("Song ended, play song #" + songplaycount);
 			play();
 		}
 
 	}
-	
+
+	//Return array list of queue getter
+	public ArrayList<Song> getQueue(){
+		return queue;
+	}
+
+	//Getter for playlist returns an array list
+	public ArrayList<Song> getPlaylist(){
+		return playlist;
+	}
 }
