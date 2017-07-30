@@ -20,8 +20,8 @@ public class QueueView extends ListView<Song> {
 	private ObservableList <Song> queue;
 	private ArrayList<Song> playlist;
 	
-	public QueueView (Playlist p){
-		playlist = p.getQueue();
+	public QueueView (ArrayList<Song> p){
+		playlist = p;
 		queue = FXCollections.observableArrayList(); 
 		for(int i = 0; i<playlist.size();i++){
 			queue.add(playlist.get(i));
