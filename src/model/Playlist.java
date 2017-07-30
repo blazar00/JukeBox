@@ -23,7 +23,6 @@ import view.QueueView;
 public class Playlist extends Thread {
 	private ArrayList<Song> playlist = new ArrayList<Song>();
 	private ArrayList<Song> queue = new ArrayList<Song>();
-	private int songplaycount = 0;
 	private MediaPlayer mediaPlayer = null;
 	private Song playingSong = null;
 	public QueueView queueview = new QueueView(queue);
@@ -79,7 +78,6 @@ public class Playlist extends Thread {
 			playingSong = s;
 			File file = new File(s.getPath());
 			URI uri = file.toURI();
-			//System.out.println(uri);
 			Media media = new Media(uri.toString());
 			mediaPlayer = new MediaPlayer(media);
 			mediaPlayer.setAutoPlay(true);
@@ -101,13 +99,11 @@ public class Playlist extends Thread {
 	// count plays
 	private class EndOfSongHandler implements Runnable {
 		public void run() {
-			songplaycount++;
 			queue.remove(0);
 			playingSong = null;
 			queueview = new QueueView(queue);
 			v.getChildren().clear();
 			v.getChildren().addAll(l, queueview);
-			System.out.println("Song ended, play song #" + songplaycount);
 			play();
 		}
 

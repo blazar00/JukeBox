@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
-import model.Playlist;
 import model.Song;
 
 /**
@@ -25,7 +24,6 @@ public class QueueView extends ListView<Song> {
 		queue = FXCollections.observableArrayList(); 
 		for(int i = 0; i<playlist.size();i++){
 			queue.add(playlist.get(i));
-			System.out.println("adding");
 		}
 		this.setItems(queue);
 	}

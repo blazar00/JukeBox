@@ -85,7 +85,6 @@ public class Iteration2Controller extends Application {
 		grid.setVgap(10);
 		songview = new SongView(playlist);
 		songview.getSelectionModel().selectFirst();
-		//queueview = new QueueView(playlist.getQueue());
 		play = new Button("Play");
 		play.setOnAction(handler);
 		play.setMaxWidth(300);
@@ -121,7 +120,7 @@ public class Iteration2Controller extends Application {
 				// authenticate
 				if ( account != null) {
 					loggedin = true;
-					loginStatus.setText("Hi, " + account.getAccountName());
+					loginStatus.setText("Hi, " + account.getAccountName()+" you have "+(3-account.getSongsPlayed())+" plays remaining today.");
 				} else {
 					loginStatus.setText("Log in failed");
 					loggedin = false;
@@ -134,12 +133,12 @@ public class Iteration2Controller extends Application {
 			else if (play == buttonClicked && loggedin) {
 				if(account.getSongsPlayed() < 3){
 					String songtitle = ((Song) songview.getSelectionModel().getSelectedItem()).getName();
-					System.out.println(songtitle);
 					Song s = playlist.find(songtitle);
 					if(s.canBePlayed()){
 						playlist.addToQueue(songtitle);
 						account.playedSong();
 						s.played();
+						loginStatus.setText("Hi, " + account.getAccountName()+" you have "+(3-account.getSongsPlayed())+" plays remaining today.");
 						songview.refresh();
 					}
 					else{

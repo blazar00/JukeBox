@@ -26,14 +26,14 @@ public class SongView extends TableView<Song> {
 	public SongView (Playlist p){
 		TableColumn <Song, String> name = new TableColumn<>("Title");
 		TableColumn <Song, String> artist = new TableColumn<>("Artist");
-		TableColumn <Song, Integer> time = new TableColumn<>("Time");
+		TableColumn <Song, String> timeStr = new TableColumn<>("Time");
 		TableColumn <Song, Integer> count = new TableColumn<>("Plays");
 		
-		this.getColumns().addAll(count,name,artist,time);
+		this.getColumns().addAll(count,name,artist,timeStr);
 		count.setCellValueFactory(new PropertyValueFactory<Song,Integer>("timesPlayed"));
 		name.setCellValueFactory(new PropertyValueFactory<Song,String>("name"));
 		artist.setCellValueFactory(new PropertyValueFactory<Song,String>("artist"));
-		time.setCellValueFactory(new PropertyValueFactory<Song,Integer>("time"));
+		timeStr.setCellValueFactory(new PropertyValueFactory<Song,String>("timeStr"));
 		songlist = p.getPlaylist();
 		songs = FXCollections.observableArrayList(); 
 		for(int i = 0; i<songlist.size();i++){

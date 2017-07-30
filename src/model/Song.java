@@ -51,6 +51,7 @@ public class Song {
 		return time;
 	}
 	
+	//Get time of song in formatted form
 	public String getTimeStr(){
 		return timeStr;
 	}
