@@ -41,11 +41,16 @@ public class Iteration2Controller extends Application {
 	private Button logoutButton;
 	private Label loginStatus;
 	private GridPane grid;
+	private GridPane adminfield;
 	private Playlist playlist;
 	private Registry reg;
 	private Button play;
+	private Button adduser;
+	private Button removeuser;
+	private Label adminStatus;
 	private SongView songview;
 	VBox vboxright = new VBox();
+	VBox vboxcenter;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -79,6 +84,15 @@ public class Iteration2Controller extends Application {
 		grid.add(logoutButton, 1, 4);
 		GridPane.setHalignment(accountLabel, HPos.RIGHT);
 		GridPane.setHalignment(passLabel, HPos.RIGHT);
+		adminfield= new GridPane();
+		adduser= new Button("Add User");
+		removeuser= new Button("Remove User");
+		adminStatus= new Label("Welcome Admin");
+		adminfield.add(adduser, 0,0);
+		adminfield.add(removeuser, 1,0);
+		adminfield.add(adminStatus, 1,1);
+		adduser.setOnAction(handler);
+		removeuser.setOnAction(handler);
 		accountName.setMaxWidth(160);
 		password.setMaxWidth(160);
 		grid.setHgap(10);
@@ -89,11 +103,12 @@ public class Iteration2Controller extends Application {
 		play.setOnAction(handler);
 		play.setMaxWidth(300);
 		play.setMaxHeight(200);
-		VBox vboxcenter = new VBox();
+		vboxcenter = new VBox();
 		vboxcenter.getChildren().addAll(play,grid);
 		vboxcenter.setAlignment(Pos.CENTER);
 		vboxcenter.setSpacing(20);
 		grid.setAlignment(Pos.CENTER);
+		adminfield.setAlignment(Pos.CENTER);
 		VBox vboxleft = new VBox();
 		vboxleft.getChildren().addAll(new Label("Choose a Song"), songview);
 		vboxright.getChildren().addAll(new Label("Songs in Queue"), playlist.queueview);
@@ -121,6 +136,13 @@ public class Iteration2Controller extends Application {
 				if ( account != null) {
 					loggedin = true;
 					loginStatus.setText("Hi, " + account.getAccountName()+" you have "+(3-account.getSongsPlayed())+" plays remaining today.");
+					if(reg.isAdmin(acc, pass)){
+						System.out.println("Admin logged in");
+						vboxcenter.getChildren().add(adminfield);
+					}
+					else{
+						vboxcenter.getChildren().remove(adminfield);
+					}
 				} else {
 					loginStatus.setText("Log in failed");
 					loggedin = false;
@@ -129,6 +151,7 @@ public class Iteration2Controller extends Application {
 			else if (logoutButton == buttonClicked && loggedin) {
 				loggedin = false;
 				loginStatus.setText("Please come again");
+				vboxcenter.getChildren().remove(adminfield);
 			}
 			else if (play == buttonClicked && loggedin) {
 				if(account.getSongsPlayed() < 3){
@@ -157,6 +180,22 @@ public class Iteration2Controller extends Application {
 			} 
 			else if (play == buttonClicked && !loggedin){
 				loginStatus.setText("Please login in to play a song");
+			}
+			else if (adduser == buttonClicked && reg.isAdmin(account.getAccountName(),account.getPassword())){
+				reg.addUser(accountName.getText(), password.getText());
+				adminStatus.setText("User Added");
+			}
+			else if (removeuser == buttonClicked && reg.isAdmin(account.getAccountName(),account.getPassword())){
+				if(!accountName.getText().equals(account.getAccountName())){
+					boolean removed = reg.removeUser(accountName.getText());
+
+					if(removed==true){
+						adminStatus.setText("User Removed");
+					}
+					else{
+						adminStatus.setText("User Not Found");
+					}
+				}
 			}
 		}
 	}

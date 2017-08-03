@@ -14,9 +14,16 @@ import model.User;
 
 public class Registry {
 	private ArrayList<User> users;
+	private User admin;
 	public Registry() {
 		users = new ArrayList<User>();
+		addAdmin();
 		addDefaultUsers();
+	}
+	
+	private void addAdmin(){
+		addUser("Alex","1234");
+		admin = search("Alex","1234");
 	}
 	
 	private void addDefaultUsers(){
@@ -24,6 +31,24 @@ public class Registry {
 		addUser("Devon", "22");
 		addUser("River", "333");
 		addUser("Ryan", "4444");
+	}
+	
+	public boolean isAdmin(String account, String pass){
+		if(search(account, pass)==admin){
+			return true;
+		}
+		else
+			return false;
+	}
+	
+	public boolean removeUser(String account){
+		for(int i = 0; i < users.size(); i++){
+			if(users.get(i).getAccountName().equals(account)){
+					users.remove(i);
+					return true;
+			}
+		}
+		return false;
 	}
 	
 	//Add a user to the registry
