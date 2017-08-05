@@ -8,4 +8,4 @@ Each user can now play a songs a max of three times. Now have logins and logout 
 Song button each have their own song when pressed.
 
 # TODO:
-  Admin Add User and Remove User buttons are only avalible if the Admin is the first User logged into in the program.
+  Possibly comment code, and review
