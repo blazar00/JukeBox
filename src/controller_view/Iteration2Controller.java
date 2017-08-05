@@ -202,12 +202,13 @@ public class Iteration2Controller extends Application {
 
 	private class ButtonListener implements EventHandler<ActionEvent>{
 		boolean loggedin = false;
-		User account;
+		User account = null;
 
 		@Override
 		public void handle(ActionEvent arg0) {
 			Button buttonClicked = (Button) arg0.getSource();
 			if (loginButton == buttonClicked) {
+				vboxcenter.getChildren().remove(adminfield);
 				String acc = accountName.getText();
 				String pass = password.getText();
 				account = reg.search(acc, pass);
@@ -231,6 +232,7 @@ public class Iteration2Controller extends Application {
 				loggedin = false;
 				loginStatus.setText("Please come again");
 				vboxcenter.getChildren().remove(adminfield);
+				account = null;
 			}
 			else if (play == buttonClicked && loggedin) {
 				if(account.getSongsPlayed() < 3){
