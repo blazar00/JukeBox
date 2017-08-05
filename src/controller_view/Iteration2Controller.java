@@ -1,5 +1,13 @@
 package controller_view;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.Optional;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -10,6 +18,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -17,6 +26,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import model.Playlist;
 import model.Registry;
 import model.Song;
@@ -42,13 +52,13 @@ public class Iteration2Controller extends Application {
 	private Label loginStatus;
 	private GridPane grid;
 	private GridPane adminfield;
-	private Playlist playlist;
+	private static Playlist playlist;
 	private Registry reg;
 	private Button play;
 	private Button adduser;
 	private Button removeuser;
 	private Label adminStatus;
-	private SongView songview;
+	private static SongView songview;
 	VBox vboxright = new VBox();
 	VBox vboxcenter;
 
@@ -115,11 +125,64 @@ public class Iteration2Controller extends Application {
 		all.setCenter(vboxcenter);
 		all.setLeft(vboxleft);
 		all.setRight(vboxright);
+		
+		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			public void handle(WindowEvent we){
+				System.out.println("App closing");
+				writePersistence();
+			}
+		});
+		
 		primaryStage.setScene(scene);
-
+		handlePersistence();
 		// Don't forget to show the running application:
 		primaryStage.show();
+		
 	}
+	
+	private void writePersistence() {
+		try{
+			//only saves the queue right now might need to save students and playlist
+			FileOutputStream bytesToDisk = new FileOutputStream("persistentObjects");
+			ObjectOutputStream outFile = new ObjectOutputStream(bytesToDisk);
+			outFile.writeObject(playlist.getQueue());
+			outFile.close();
+		} 
+		catch(IOException e){
+			System.out.println(e);
+		}
+	}
+	
+	private static void readPersistence() {
+		try{
+			FileInputStream rawBytes = new FileInputStream("persistentObjects");
+			ObjectInputStream inFile = new ObjectInputStream(rawBytes);
+			@SuppressWarnings("unchecked")
+			ArrayList<Song> queueList = (ArrayList<Song>) inFile.readObject();
+			playlist.setQueue(queueList);
+		} 
+		catch(IOException | ClassNotFoundException e){
+			System.out.println(e);
+		}
+	}
+	
+	private static void handlePersistence() {
+	    Alert alert = new Alert(AlertType.CONFIRMATION);
+	    alert.setTitle("Start Up Option");
+	    alert.setHeaderText("Start with initial state?");
+	    alert.setContentText("Press ok while system testing.");
+	    Optional<ButtonType> result = alert.showAndWait();
+
+	    // TODO: Either read the saved status or start with default
+	    if (result.get() == ButtonType.OK) {
+
+	    } else {   
+	    	readPersistence();
+	    	//TODO: Need songview to show the number of times song played as well as update how many plays the user has
+	    	//by saving all student objects?
+	    	songview.refresh();
+	    }
+	  }
 
 	private class ButtonListener implements EventHandler<ActionEvent>{
 		boolean loggedin = false;

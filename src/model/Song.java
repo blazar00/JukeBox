@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
@@ -10,7 +11,8 @@ import java.time.LocalDate;
  * 
  */
 
-public class Song {
+@SuppressWarnings("serial")
+public class Song implements Serializable{
 	private String name;
 	private String path;
 	private String artist;

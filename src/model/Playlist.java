@@ -36,6 +36,14 @@ public class Playlist extends Thread {
 		addDefaultSongs();
 		v = box;
 	}
+	// TODO: Need to make queue into singleton
+	/*
+	private static ArrayList<Song> getPlaylistQueue(){
+		if(queue == null){
+			queue = new ArrayList<Song>();
+		}
+		return queue;
+	}*/
 
 	//Setup up a playlist with a bunch of songs
 	public void addDefaultSongs(){
@@ -118,4 +126,13 @@ public class Playlist extends Thread {
 	public ArrayList<Song> getPlaylist(){
 		return playlist;
 	}
+		
+	public void setQueue(ArrayList<Song> p){
+		queue=p;
+		queueview = new QueueView(queue);
+		v.getChildren().clear();
+		v.getChildren().addAll(l, queueview);
+		play();
+	}
+
 }
