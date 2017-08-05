@@ -1,5 +1,7 @@
 package model;
 
+import java.io.Serializable;
+
 /**
 *
 * This class represents a user for the JukeBox GUI. Each user
@@ -11,7 +13,8 @@ package model;
 */
 
 
-public class User {
+@SuppressWarnings("serial")
+public class User implements Serializable{
 	private String accountName;
 	private String password;
 	int songsPlayed;

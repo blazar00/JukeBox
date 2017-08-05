@@ -53,14 +53,15 @@ public class Iteration2Controller extends Application {
 	private GridPane grid;
 	private GridPane adminfield;
 	private static Playlist playlist;
-	private Registry reg;
+	private static Registry reg;
 	private Button play;
 	private Button adduser;
 	private Button removeuser;
 	private Label adminStatus;
 	private static SongView songview;
-	VBox vboxright = new VBox();
-	VBox vboxcenter;
+	static VBox vboxright = new VBox();
+	static VBox vboxleft = new VBox();
+	VBox vboxcenter = new VBox();
 
 	public static void main(String[] args) {
 		launch(args);
@@ -119,7 +120,6 @@ public class Iteration2Controller extends Application {
 		vboxcenter.setSpacing(20);
 		grid.setAlignment(Pos.CENTER);
 		adminfield.setAlignment(Pos.CENTER);
-		VBox vboxleft = new VBox();
 		vboxleft.getChildren().addAll(new Label("Choose a Song"), songview);
 		vboxright.getChildren().addAll(new Label("Songs in Queue"), playlist.queueview);
 		all.setCenter(vboxcenter);
@@ -143,23 +143,40 @@ public class Iteration2Controller extends Application {
 	private void writePersistence() {
 		try{
 			//only saves the queue right now might need to save students and playlist
-			FileOutputStream bytesToDisk = new FileOutputStream("persistentObjects");
-			ObjectOutputStream outFile = new ObjectOutputStream(bytesToDisk);
-			outFile.writeObject(playlist.getQueue());
-			outFile.close();
+			FileOutputStream queueStream = new FileOutputStream("queueObject");
+			FileOutputStream playlistStream = new FileOutputStream("playlistObject");
+			FileOutputStream registryStream = new FileOutputStream("registryObject");
+			ObjectOutputStream queueFile = new ObjectOutputStream(queueStream);
+			ObjectOutputStream playlistFile = new ObjectOutputStream(playlistStream);
+			ObjectOutputStream registryFile = new ObjectOutputStream(registryStream);
+			queueFile.writeObject(playlist.getQueue());
+			playlistFile.writeObject(playlist.getPlaylist());
+			registryFile.writeObject(reg.getUserList());
+			queueFile.close();
+			playlistFile.close();
+			registryFile.close();
 		} 
 		catch(IOException e){
 			System.out.println(e);
 		}
 	}
 	
+	@SuppressWarnings({ "resource", "unchecked" })
 	private static void readPersistence() {
 		try{
-			FileInputStream rawBytes = new FileInputStream("persistentObjects");
-			ObjectInputStream inFile = new ObjectInputStream(rawBytes);
-			@SuppressWarnings("unchecked")
-			ArrayList<Song> queueList = (ArrayList<Song>) inFile.readObject();
+			FileInputStream queueBytes = new FileInputStream("queueObject");
+			FileInputStream playBytes = new FileInputStream("playlistObject");
+			FileInputStream regBytes = new FileInputStream("registryObject");
+			ObjectInputStream queueFile = new ObjectInputStream(queueBytes);
+			ObjectInputStream playFile = new ObjectInputStream(playBytes);
+			ObjectInputStream regFile = new ObjectInputStream(regBytes);
+			ArrayList<Song> queueList = (ArrayList<Song>) queueFile.readObject();
+			ArrayList<Song> playList = (ArrayList<Song>) playFile.readObject();
+			ArrayList<User> regList = (ArrayList<User>) regFile.readObject();
 			playlist.setQueue(queueList);
+			playlist.setPlaylist(playList);
+			reg.setUserList(regList);
+			songview = new SongView(playlist);
 		} 
 		catch(IOException | ClassNotFoundException e){
 			System.out.println(e);
@@ -174,14 +191,13 @@ public class Iteration2Controller extends Application {
 	    Optional<ButtonType> result = alert.showAndWait();
 
 	    // TODO: Either read the saved status or start with default
-	    if (result.get() == ButtonType.OK) {
-
-	    } else {   
+	    if (result.get() == ButtonType.CANCEL) {
 	    	readPersistence();
 	    	//TODO: Need songview to show the number of times song played as well as update how many plays the user has
 	    	//by saving all student objects?
-	    	songview.refresh();
-	    }
+	    	vboxleft.getChildren().clear();
+	    	vboxleft.getChildren().addAll(new Label("Choose a Song"), songview);
+	    } 
 	  }
 
 	private class ButtonListener implements EventHandler<ActionEvent>{

@@ -15,6 +15,7 @@ import model.User;
 public class Registry {
 	private ArrayList<User> users;
 	private User admin;
+	
 	public Registry() {
 		users = new ArrayList<User>();
 		addAdmin();
@@ -22,8 +23,8 @@ public class Registry {
 	}
 	
 	private void addAdmin(){
-		addUser("Alex","1234");
-		admin = search("Alex","1234");
+		addUser("Alex","12345");
+		admin = search("Alex","12345");
 	}
 	
 	private void addDefaultUsers(){
@@ -34,7 +35,7 @@ public class Registry {
 	}
 	
 	public boolean isAdmin(String account, String pass){
-		if(search(account, pass)==admin){
+		if(search(account, pass).equals(admin)){
 			return true;
 		}
 		else
@@ -63,6 +64,14 @@ public class Registry {
 				if(users.get(i).getPassword().equals(pass))
 					return users.get(i);
 		return null;
+	}
+	
+	public ArrayList<User> getUserList(){
+		return users;
+	}
+	
+	public void setUserList(ArrayList<User> u){
+		users = u;
 	}
 
 }

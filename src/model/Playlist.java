@@ -10,6 +10,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import model.Song;
 import view.QueueView;
+import view.SongView;
 
 /**
  *
@@ -133,6 +134,10 @@ public class Playlist extends Thread {
 		v.getChildren().clear();
 		v.getChildren().addAll(l, queueview);
 		play();
+	}
+	
+	public void setPlaylist(ArrayList<Song> p){
+		playlist = p;
 	}
 
 }
