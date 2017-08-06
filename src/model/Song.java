@@ -63,6 +63,7 @@ public class Song implements Serializable{
 		return timesPlayed;
 	}
 	
+	//Played using local date to count how many times a song was played each day
 	public void played(){
 		date = LocalDate.now();
 		if(lastPlayed == null){
@@ -78,12 +79,14 @@ public class Song implements Serializable{
 		
 	}
 	
+	//Count the play limit per day
 	public boolean canBePlayed(){
 		if(timesPlayed < 3)
 			return true;
 		return false;
 	}
 	
+	//String format for song consists of song name and artist
 	public String toString(){
 		return name+"- "+artist;
 	}

@@ -29,6 +29,7 @@ public class Playlist extends Thread {
 	public VBox v;
 	private Label l = new Label("Songs in Queue");
 
+	//Constructor for playlist thread
 	public Playlist(VBox box){
 		super();
 		this.setDaemon(true);
@@ -119,6 +120,7 @@ public class Playlist extends Thread {
 		return playlist;
 	}
 		
+	//Set the Queue persistence
 	public void setQueue(ArrayList<Song> p){
 		queue=p;
 		queueview = new QueueView(queue);
@@ -127,6 +129,7 @@ public class Playlist extends Thread {
 		play();
 	}
 	
+	//Set Playlist persistence
 	public void setPlaylist(ArrayList<Song> p){
 		playlist = p;
 	}

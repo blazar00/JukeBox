@@ -79,6 +79,7 @@ public class Registry {
 	// Set a new list of users
 	public void setUserList(ArrayList<User> u){
 		users = u;
+		admin = search("Alex","12345");
 	}
 
 }
