@@ -16,17 +16,20 @@ public class Registry {
 	private ArrayList<User> users;
 	private User admin;
 	
+	// Constructor
 	public Registry() {
 		users = new ArrayList<User>();
 		addAdmin();
 		addDefaultUsers();
 	}
 	
+	// adds default admin
 	private void addAdmin(){
 		addUser("Alex","12345");
 		admin = search("Alex","12345");
 	}
 	
+	// sets all the default accounts
 	private void addDefaultUsers(){
 		addUser("Chris", "1");
 		addUser("Devon", "22");
@@ -34,6 +37,7 @@ public class Registry {
 		addUser("Ryan", "4444");
 	}
 	
+	// checks if the user passed in is an Admin
 	public boolean isAdmin(String account, String pass){
 		if(search(account, pass).equals(admin)){
 			return true;
@@ -42,6 +46,7 @@ public class Registry {
 			return false;
 	}
 	
+	// remove a user from the list
 	public boolean removeUser(String account){
 		for(int i = 0; i < users.size(); i++){
 			if(users.get(i).getAccountName().equals(account)){
@@ -66,10 +71,12 @@ public class Registry {
 		return null;
 	}
 	
+	// Get the current list of users
 	public ArrayList<User> getUserList(){
 		return users;
 	}
 	
+	// Set a new list of users
 	public void setUserList(ArrayList<User> u){
 		users = u;
 	}

@@ -43,7 +43,7 @@ import view.SongView;
  * 
  */
 
-public class Iteration2Controller extends Application {
+public class Iteration3Controller extends Application {
 
 	private TextField accountName;
 	private PasswordField password;
@@ -140,9 +140,9 @@ public class Iteration2Controller extends Application {
 		
 	}
 	
+	// saves the current state
 	private void writePersistence() {
 		try{
-			//only saves the queue right now might need to save students and playlist
 			FileOutputStream queueStream = new FileOutputStream("queueObject");
 			FileOutputStream playlistStream = new FileOutputStream("playlistObject");
 			FileOutputStream registryStream = new FileOutputStream("registryObject");
@@ -161,6 +161,7 @@ public class Iteration2Controller extends Application {
 		}
 	}
 	
+	// reads the current state
 	@SuppressWarnings({ "resource", "unchecked" })
 	private static void readPersistence() {
 		try{
@@ -183,6 +184,7 @@ public class Iteration2Controller extends Application {
 		}
 	}
 	
+	// asks user is they want the last saved instance or a new instance of the program
 	private static void handlePersistence() {
 	    Alert alert = new Alert(AlertType.CONFIRMATION);
 	    alert.setTitle("Start Up Option");
@@ -190,16 +192,14 @@ public class Iteration2Controller extends Application {
 	    alert.setContentText("Press ok while system testing.");
 	    Optional<ButtonType> result = alert.showAndWait();
 
-	    // TODO: Either read the saved status or start with default
 	    if (result.get() == ButtonType.CANCEL) {
 	    	readPersistence();
-	    	//TODO: Need songview to show the number of times song played as well as update how many plays the user has
-	    	//by saving all student objects?
 	    	vboxleft.getChildren().clear();
 	    	vboxleft.getChildren().addAll(new Label("Choose a Song"), songview);
 	    } 
 	  }
 
+	// user login/logout and playing songs
 	private class ButtonListener implements EventHandler<ActionEvent>{
 		boolean loggedin = false;
 		User account = null;
